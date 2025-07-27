@@ -9,7 +9,7 @@ connectDB();
 
 const doctorRoutes = require('./routes/doctorRoutes');
 const appointmentRoutes = require('./routes/appointmentRoutes');
-const errorHandler = require('./middlewares/errorHandler');
+
 const { logger } = require('./utils/logger');
 
 const app = express();

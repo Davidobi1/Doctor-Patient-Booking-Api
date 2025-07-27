@@ -27,7 +27,7 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map(val => val.message);
+    const message = Object.values(err.errors).map(val => val.message).join(', ');
     error = new AppError(message, 400);
   }
 
@@ -37,6 +37,7 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 };
+
 console.log('✅ errorHandler middleware loaded');
 
 module.exports = errorHandler;
