@@ -37,5 +37,6 @@ const errorHandler = (err, req, res, next) => {
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
 };
+console.log('✅ errorHandler middleware loaded');
 
 module.exports = errorHandler;

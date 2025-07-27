@@ -1,7 +1,7 @@
 const Appointment = require('../models/appointment');
-const Doctor = require('../models/Doctor');
-const Patient = require('../models/Patient');
-const { AppError } = require('../utils/appError');
+const Doctor = require('../models/doctors');
+const Patient = require('../models/patients');
+const { AppError } = require('../utils/errors');
 
 exports.createAppointment = async (req, res, next) => {
   try {

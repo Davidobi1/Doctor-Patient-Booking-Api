@@ -1,5 +1,5 @@
-const Doctor = require('../models/Doctor');
-const { AppError } = require('../utils/appError');
+const Doctor = require('../models/doctors');
+const { AppError } = require('../utils/errors');
 
 exports.getDoctors = async (req, res, next) => {
   try {
