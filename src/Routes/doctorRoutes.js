@@ -8,7 +8,7 @@ const {
   createDoctor,
   updateDoctor,
   deleteDoctor
-} = require('../Controllers/doctorController');
+} = require('../controllers/doctorController');
 
 router.get('/', getDoctors);
 router.get('/:id', getDoctorById);

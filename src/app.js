@@ -51,11 +51,11 @@ app.get('/api', (req, res) => {
     endpoints: {
       doctors: {
         base: '/api/doctors',
-        methods: ['GET', 'POST', 'PUT', 'DELETE']
+        methods: ['GET', 'POST', 'DELETE']
       },
       appointments: {
         base: '/api/appointments', 
-        methods: ['GET', 'POST', 'PATCH']
+        methods: ['GET', 'POST']
       },
       patients: {
         base: '/api/patients',
