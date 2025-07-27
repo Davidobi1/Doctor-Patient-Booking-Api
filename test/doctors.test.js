@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../server');
+const app = require('../src/server');
 
 describe('Doctor Endpoints', () => {
   describe('GET /api/doctors', () => {
