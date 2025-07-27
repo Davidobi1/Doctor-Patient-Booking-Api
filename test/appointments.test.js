@@ -1,5 +1,6 @@
 const request = require('supertest');
-const app = require('../src/server');
+const mongoose = require('mongoose');
+const app = require('../src/app');
 
 describe('Appointment Endpoints', () => {
   let doctorId;
@@ -13,6 +14,10 @@ describe('Appointment Endpoints', () => {
     // Get a patient ID for testing
     const patientsRes = await request(app).get('/api/appointments/patients');
     patientId = patientsRes.body.data[0].id;
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect();
   });
 
   describe('POST /api/appointments', () => {

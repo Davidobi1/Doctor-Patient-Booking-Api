@@ -38,6 +38,5 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-console.log('✅ errorHandler middleware loaded');
 
 module.exports = errorHandler;

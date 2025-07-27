@@ -4,7 +4,7 @@ const {
   createAppointment,
   getAppointments,
   getAllPatientsFromAppointments
-} = require('../Controllers/appointmentController');
+} = require('../controllers/appointmentController');
 
 router.post('/', createAppointment);
 router.get('/', getAppointments);

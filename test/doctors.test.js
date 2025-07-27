@@ -1,7 +1,12 @@
 const request = require('supertest');
-const app = require('../src/server');
+const mongoose = require('mongoose');
+const app = require('../src/app');
 
 describe('Doctor Endpoints', () => {
+  afterAll(async () => {
+    await mongoose.disconnect();
+  });
+
   describe('GET /api/doctors', () => {
     it('should get all doctors', async () => {
       const res = await request(app)
@@ -57,9 +62,9 @@ describe('Doctor Endpoints', () => {
 
     it('should return 400 for invalid doctor data', async () => {
       const invalidData = {
-        name: 'A', // Too short
-        specialization: '', // Empty
-        timings: [] // Empty array
+        name: 'A',
+        specialization: '',
+        timings: []
       };
 
       const res = await request(app)
