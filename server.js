@@ -3,14 +3,14 @@ const helmet = require('helmet');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
-const connectDB = require('./config/db');
+const connectDB = require('./src/config/db');
 connectDB();
 
 
-const doctorRoutes = require('./routes/doctorRoutes');
-const appointmentRoutes = require('./routes/appointmentRoutes');
-
-const { logger } = require('./utils/logger');
+const doctorRoutes = require('./src/Routes/doctorRoutes');
+const appointmentRoutes = require('./src/Routes/appointmentRoutes');
+const errorHandler = require('./middleware/errorHandler');
+const { logger } = require('./src/utils/logger');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
