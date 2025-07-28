@@ -35,7 +35,7 @@ A RESTful API service for managing doctor-patient bookings, including appointmen
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/doctor-patient-api.git
+git clone https://github.com/Davidobi1/Doctor-Patient-Booking-Api
 cd doctor-patient-api
 ```
 
@@ -51,7 +51,7 @@ Create a `.env` file:
 
 ```env
 PORT=3000
-MONGO_URI=mongodb://localhost:27017/clinic
+MONGO_URI= Cluster of your choice
 NODE_ENV=development
 ```
 
