@@ -17,7 +17,6 @@ A RESTful API service for managing doctor-patient bookings, including appointmen
 │   └── server.js           # Server and DB entry point
 ├── Dockerfile              # Container build config
 ├── docker-compose.yml      # Local dev & prod containers
-├── .env                    # Environment variables
 ├── package.json
 └── README.md
 ```
