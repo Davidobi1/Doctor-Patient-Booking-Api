@@ -33,7 +33,6 @@ Thumbs.db
 .dockerignore
 docker-compose.override.yml
 docker-compose.dev.yml
-Dockerfile*
 
 # local database volumes
 data/
