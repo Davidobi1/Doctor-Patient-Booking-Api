@@ -7,12 +7,12 @@ const {
 } = require('../controllers/appointmentController');
 
 // Create a new appointment
-router.post('/', createAppointment);
+router.post('/appointments', createAppointment);
 
 // Get appointments by doctor ID
-router.get('/by-doctor', getAppointmentsByDoctorId);
+router.get('/appointments?doctorId={id}', getAppointmentsByDoctorId);
 
 // Get appointments by patient ID
-router.get('/by-patient', getAppointmentsByPatientId);
+router.get('/appointments?patientId={id}', getAppointmentsByPatientId);
 
 module.exports = router;

@@ -9,7 +9,7 @@ const {
 // Create a new doctor
 router.post('/', createDoctor);
 
-// Get all doctors with pagination and optional specialization filter
+// Get all doctors with pagination and  specialization filter
 router.get('/', getDoctors);
 
 // Get a specific doctor by ID
