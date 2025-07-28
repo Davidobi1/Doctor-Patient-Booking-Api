@@ -1,16 +1,26 @@
 const Doctor = require('../models/doctors');
 const { AppError } = require('../utils/errors');
 
-exports.getDoctors = async (req, res, next) => {
+const getDoctors = async (req, res, next) => {
   try {
-    const filter = req.query.specialization ? { specialization: req.query.specialization } : {};
-    const doctors = await Doctor.find(filter);
+    const { page = 1, limit = 10, specialization } = req.query;
+
+    const query = specialization ? { specialization } : {};
+
+    const doctors = await Doctor.find(query)
+      .skip((page - 1) * limit)
+      .limit(Number(limit));
+
+    const total = await Doctor.countDocuments(query);
 
     res.status(200).json({
       success: true,
-      data: {
-        doctors,
-        pagination: { total: doctors.length }
+      data: doctors,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / limit)
       }
     });
   } catch (error) {
@@ -18,7 +28,7 @@ exports.getDoctors = async (req, res, next) => {
   }
 };
 
-exports.getDoctorById = async (req, res, next) => {
+const getDoctorById = async (req, res, next) => {
   try {
     const doctor = await Doctor.findById(req.params.id);
     if (!doctor) return next(new AppError('Doctor not found', 404));
@@ -29,7 +39,7 @@ exports.getDoctorById = async (req, res, next) => {
   }
 };
 
-exports.createDoctor = async (req, res, next) => {
+const createDoctor = async (req, res, next) => {
   try {
     const doctor = await Doctor.create(req.body);
     res.status(201).json({ success: true, data: doctor });
@@ -38,24 +48,9 @@ exports.createDoctor = async (req, res, next) => {
   }
 };
 
-exports.updateDoctor = async (req, res, next) => {
-  try {
-    const doctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!doctor) return next(new AppError('Doctor not found', 404));
 
-    res.status(200).json({ success: true, data: doctor });
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.deleteDoctor = async (req, res, next) => {
-  try {
-    const doctor = await Doctor.findByIdAndDelete(req.params.id);
-    if (!doctor) return next(new AppError('Doctor not found', 404));
-
-    res.status(204).json({ success: true, data: null });
-  } catch (error) {
-    next(error);
-  }
+module.exports = {
+  getDoctors,
+  getDoctorById,
+  createDoctor
 };

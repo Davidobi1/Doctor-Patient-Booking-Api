@@ -1,19 +1,18 @@
 const express = require('express');
 const router = express.Router();
-
-// Importing controller functions
 const {
   getDoctors,
   getDoctorById,
   createDoctor,
-  updateDoctor,
-  deleteDoctor
 } = require('../controllers/doctorController');
 
-router.get('/', getDoctors);
-router.get('/:id', getDoctorById);
+// Create a new doctor
 router.post('/', createDoctor);
-router.put('/:id', updateDoctor);
-router.delete('/:id', deleteDoctor);
+
+// Get all doctors with pagination and optional specialization filter
+router.get('/', getDoctors);
+
+// Get a specific doctor by ID
+router.get('/:id', getDoctorById);
 
 module.exports = router;

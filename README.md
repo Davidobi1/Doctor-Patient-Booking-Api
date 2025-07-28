@@ -1,225 +1,158 @@
-# Doctor-Patient Booking API Service
+# 🏥 Doctor-Patient Booking API
 
-A comprehensive REST API service for managing doctor-patient appointments with clean architecture, proper error handling, and extensive documentation.
+A RESTful API service for managing doctor-patient bookings, including appointment scheduling, patient and doctor records, and health checks. Built with **Node.js**, **Express**, and **MongoDB** using **Mongoose**.
 
-## Features
+---
 
-* **Complete CRUD Operations** for doctors and appointments
-* **User Role Simulation** (Doctor/Patient) without authentication
-* **Proper Error Handling** with detailed error messages
-* **Input Validation** using Joi schema validation
-* **Pagination Support** for all list endpoints
-* **API Documentation** with Swagger/OpenAPI
-* **Clean Architecture** with separation of concerns
-* **In-Memory Data Storage** with sample data
-* **Docker Support** for easy deployment
-* **Comprehensive Test Suite** with Jest
-* **Security Features** (Rate limiting, CORS, Helmet)
-* **Health Check Endpoint** for monitoring
+## 📁 Project Structure
 
-## Quick Start
-
-### Using Docker (Recommended)
-
-```bash
-# Clone the repository
-git clone <repository-url>
-cd doctor-booking-api
-
-# Build and run with Docker Compose
-docker-compose up --build
-
-# The API will be available at http://localhost:3000
-# API Documentation at http://localhost:3000/api-docs
+```
+├── src/
+│   ├── controllers/        # Business logic for each route
+│   ├── models/             # Mongoose models
+│   ├── routes/             # Express route definitions
+│   ├── validators/         # Joi validation schemas
+│   ├── utils/              # Logging and helper functions
+│   ├── app.js              # Express app setup
+│   └── server.js           # Server and DB entry point
+├── Dockerfile              # Container build config
+├── docker-compose.yml      # Local dev & prod containers
+├── .env                    # Environment variables
+├── package.json
+└── README.md
 ```
 
-### Local Development
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js ≥ 18
+- MongoDB
+- Docker 
+
+### 1. Clone the repository
 
 ```bash
-# Install dependencies
+git clone https://github.com/your-username/doctor-patient-api.git
+cd doctor-patient-api
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+```
 
-# Start development server
+### 3. Set environment variables
+
+Create a `.env` file:
+
+```env
+PORT=3000
+MONGO_URI=mongodb://localhost:27017/clinic
+NODE_ENV=development
+```
+
+---
+
+## 🧪 Running the API
+
+### Development
+
+```bash
 npm run dev
+```
 
-# Run tests
-npm test
+### Production
 
-# Start production server
+```bash
 npm start
 ```
 
-## API Endpoints
-
-### Doctors
-
-* `GET /api/doctors` - List all doctors (with pagination and filtering)
-* `GET /api/doctors/:id` - Get doctor details
-* `POST /api/doctors` - Create a new doctor
-* `PUT /api/doctors/:id` - Update doctor information
-* `DELETE /api/doctors/:id` - Delete a doctor
-
-### Appointments
-
-* `POST /api/appointments` - Book a new appointment
-* `GET /api/appointments?doctor_id=:id` - Get appointments for a doctor
-* `GET /api/appointments?patient_id=:id` - Get appointments for a patient
-* `PATCH /api/appointments/:id/status` - Update appointment status
-
-### Patients
-
-* `GET /api/appointments/patients` - List all patients
-* `POST /api/appointments/patients` - Create a new patient
-
-### Utility
-
-* `GET /health` - Health check endpoint
-* `GET /api-docs` - API documentation
-
-## Sample API Usage
-
-### 1. Get All Doctors
+### Docker (Recommended)
 
 ```bash
-curl -X GET "http://localhost:3000/api/doctors"
+docker-compose up --build
 ```
 
-### 2. Get Doctor Details
+---
+
+## 📌 API Endpoints
+
+### 👩‍⚕️ Doctors
+
+| Method | Endpoint             | Description            |
+|--------|----------------------|------------------------|
+| POST   | `/doctors`           | Create a new doctor    |
+| GET    | `/doctors`           | Get all doctors        |
+| GET    | `/doctors/:id`       | Get specific doctor    |           
+### 👨‍👩‍👧 Patients
+
+| Method | Endpoint             | Description             |
+|--------|----------------------|-------------------------|
+| POST   | `/patients`          | Register a new patient  |
+| GET    | `/patients`          | Get all patients        |
+
+### 📅 Appointments
+
+| Method | Endpoint               | Description             |
+|--------|------------------------|-------------------------|
+| POST   | `/appointments`        | Book a new appointment  |
+| GET    | `/appointments?patients_id=`| Get patient appointment |
+| GET    | `/appointments?doctor_id=`|Get doctors appointment|
+
+### 🔄 Health
+
+| Method | Endpoint         | Description          |
+|--------|------------------|----------------------|
+| GET    | `/health`        | Health check status  |
+| GET    | `/api`           | Api docs             |
+---
+
+## ✅ Features
+
+- 📚 Modular architecture
+- 🔒 Input validation with Joi
+- 🗃️ MongoDB with Mongoose
+- 🐳 Docker + Docker Compose support
+- 🔁 Health check endpoints
+- 📄 Logging with timestamps
+
+---
+
+## 🧪 Seeding Sample Data
 
 ```bash
-curl -X GET "http://localhost:3000/api/doctors/{doctor-id}"
+node src/seed.js
 ```
 
-### 3. Create an Appointment
+This seeds doctors and patients into your MongoDB database.
 
-```bash
-curl -X POST "http://localhost:3000/api/appointments" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "doctorId": "doctor-uuid",
-    "patientId": "patient-uuid",
-    "date": "2025-08-15",
-    "time": "10:00",
-    "notes": "Regular checkup"
-  }'
-```
+---
 
-### 4. Get Doctor's Appointments
 
-```bash
-curl -X GET "http://localhost:3000/api/appointments?doctor_id={doctor-id}"
-```
+## 📦 Example Requests (Postman)
 
-## Sample Data
+Import the Postman collection provided , or manually test:
+https://web.postman.co/workspace/My-Workspace~f26246a3-b771-4df4-81de-73eb6a52d2e5/collection/38720190-0e440fd3-d70d-4265-bf88-98ef2e4a609c?action=share&source=copy-link&creator=38720190
 
-The application comes pre-loaded with:
-
-* **5 Sample Doctors** across different specializations
-* **5 Sample Patients** with complete profiles
-* All with realistic data for immediate testing
-
-## Architecture
-
-```
-src/
-├── controllers/     # Request handlers
-├── services/       # Business logic
-├── models/         # Data models
-├── routes/         # Route definitions
-├── middleware/     # Custom middleware
-├── validators/     # Input validation schemas
-├── utils/          # Utility functions
-└── server.js       # Application entry point
-```
-
-## Key Features Implemented
-
-### ✅ Functional Requirements
-
-* [x] Patient can view doctors and book appointments
-* [x] Doctor can view their appointments
-* [x] User role simulation without authentication
-* [x] All required API endpoints implemented
-* [x] In-memory data storage with sample data
-
-### ✅ Bonus Features
-
-* [x] **Comprehensive Error Handling** - Custom error classes, validation errors
-* [x] **Clean Architecture** - Proper separation of controllers, services, models
-* [x] **Pagination** - All list endpoints support pagination
-* [x] **Input Validation** - Joi schema validation for all inputs
-* [x] **API Documentation** - Complete Swagger/OpenAPI documentation
-* [x] **Docker Support** - Dockerfile and docker-compose.yml
-* [x] **Security Features** - Rate limiting, CORS, Helmet
-* [x] **Logging System** - Structured logging with different levels
-* [x] **Health Monitoring** - Health check endpoint
-* [x] **Test Suite** - Comprehensive tests with Jest
-
-## Error Handling
-
-The API provides detailed error responses:
-
-```json
+```http
+POST /patients
 {
-  "success": false,
-  "error": "Doctor not found",
-  "details": "The requested doctor ID does not exist"
+  "name": "Akosua Adjei",
+  "age": 28,
+  "gender": "Female",
+  "contactInfo": {
+    "email": "akosua.adjei@example.com",
+    "phone": "0260001111"
+  }
 }
 ```
 
-## Validation
+---
 
-Input validation using Joi schemas:
+## 📄 License
 
-* **Doctor Data**: Name, specialization, timings validation
-* **Appointment Data**: Date format, time format, required fields
-* **Email/Phone**: Format validation for contact information
-
-## Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-## Development Notes
-
-### Design Decisions
-
-1. **In-Memory Storage**: Used Maps for O(1) lookup performance
-2. **UUID-based IDs**: More realistic than sequential integers
-3. **Comprehensive Validation**: Both Joi schemas and business logic validation
-4. **Clean Error Handling**: Custom error classes with proper HTTP status codes
-5. **Modular Architecture**: Easy to extend and maintain
-
-### Future Enhancements
-
-* Database integration (PostgreSQL/MongoDB)
-* Authentication & authorization
-* Real-time notifications
-* Email/SMS confirmations
-* Calendar integration
-* Advanced filtering and search
-
-## Production Readiness
-
-The API includes production-ready features:
-
-* Docker containerization
-* Health checks
-* Security middleware
-* Rate limiting
-* Comprehensive logging
-* Error monitoring capabilities
-* API documentation
-
-## Support
-
-For questions or issues, please refer to:
-
-* API Documentation: `http://localhost:3000/api-docs`
-* Health Check: `http://localhost:3000/health`
-* Log files for debugging information
+MIT © 2025 — David Obi

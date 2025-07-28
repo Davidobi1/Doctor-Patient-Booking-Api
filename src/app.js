@@ -21,8 +21,8 @@ app.use(cors());
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
   message: 'Too many requests from this IP, please try again later.'
 });
 app.use(limiter);
@@ -42,7 +42,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API Info endpoint for Postman
+// API Info endpoint
 app.get('/api', (req, res) => {
   res.status(200).json({
     name: 'Doctor-Patient Booking API',
@@ -51,18 +51,29 @@ app.get('/api', (req, res) => {
     endpoints: {
       doctors: {
         base: '/api/doctors',
-        methods: ['GET', 'POST', 'DELETE']
+        routes: [
+          'GET /api/doctors',
+          'GET /api/doctors/:id',
+          'POST /api/doctors'
+        ]
       },
       appointments: {
-        base: '/api/appointments', 
-        methods: ['GET', 'POST']
+        base: '/api/appointments',
+        routes: [
+          'GET /api/appointments?doctorId={id}',
+          'GET /api/appointments?patientId={id}',
+          'POST /api/appointments',
+        ]
       },
       patients: {
         base: '/api/patients',
-        methods: ['GET', 'POST']
+        routes: [
+          'GET /api/patients',
+          'POST /api/patients'
+        ]
       }
     },
-    postman_collection: 'See route files for detailed Postman examples'
+    postman_collection: 'Refer to the provided Postman collection for full details'
   });
 });
 
@@ -74,7 +85,7 @@ app.use('/api/patients', patientRoutes);
 // Error handling middleware
 app.use(errorHandler);
 
-// 404 handler
+// 404 fallback
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
@@ -83,12 +94,15 @@ app.use('*', (req, res) => {
       'GET /health',
       'GET /api',
       'GET /api/doctors',
+      'GET /api/doctors/:id',
+      'POST /api/doctors',
+      'GET /api/appointments?doctorId={id}',
+      'GET /api/appointments?patientId={id}',
       'POST /api/appointments',
-      'GET /api/appointments/patients',
+      'GET /api/patients',
       'POST /api/patients'
     ]
   });
 });
-
 
 module.exports = app;

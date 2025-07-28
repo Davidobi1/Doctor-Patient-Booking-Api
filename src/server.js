@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const app = require('./app');
-const { logger }= require('./utils/logger'); // or use console.log
+const { logger }= require('./utils/logger'); 
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;

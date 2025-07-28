@@ -2,12 +2,17 @@ const express = require('express');
 const router = express.Router();
 const {
   createAppointment,
-  getAppointments,
-  getAllPatientsFromAppointments
+  getAppointmentsByDoctorId,
+  getAppointmentsByPatientId
 } = require('../controllers/appointmentController');
 
+// Create a new appointment
 router.post('/', createAppointment);
-router.get('/', getAppointments);
-router.get('/patients', getAllPatientsFromAppointments);
+
+// Get appointments by doctor ID
+router.get('/by-doctor', getAppointmentsByDoctorId);
+
+// Get appointments by patient ID
+router.get('/by-patient', getAppointmentsByPatientId);
 
 module.exports = router;

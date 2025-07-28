@@ -3,18 +3,16 @@ const Doctor = require('../models/doctors');
 const Patient = require('../models/patients');
 const { AppError } = require('../utils/errors');
 
-exports.createAppointment = async (req, res, next) => {
+const createAppointment = async (req, res, next) => {
   try {
     const { doctorId, patientId, date, time, notes } = req.body;
 
-    // Optional: Validate date is not in the past
     const now = new Date();
     const appointmentDateTime = new Date(`${date}T${time}:00`);
     if (appointmentDateTime < now) {
       return next(new AppError('Appointment date cannot be in the past', 400));
     }
 
-    // Check doctor and patient existence
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) return next(new AppError('Doctor not found', 404));
 
@@ -29,48 +27,72 @@ exports.createAppointment = async (req, res, next) => {
   }
 };
 
-exports.getAppointments = async (req, res, next) => {
+const getAppointmentsByDoctorId = async (req, res, next) => {
   try {
-    const { doctor_id, patient_id } = req.query;
+    const { doctor_id } = req.query;
+    const { page = 1, limit = 10 } = req.query;
 
-    if (!doctor_id && !patient_id) {
-      return next(new AppError('doctor_id or patient_id must be provided', 400));
-    }
+    if (!doctor_id) return next(new AppError('doctor_id query param is required', 400));
 
-    const filter = {};
-    if (doctor_id) filter.doctorId = doctor_id;
-    if (patient_id) filter.patientId = patient_id;
+    const query = { doctorId: doctor_id };
 
-    const appointments = await Appointment.find(filter)
+    const appointments = await Appointment.find(query)
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
       .populate('doctorId', 'name specialization')
       .populate('patientId', 'name email');
 
+    const total = await Appointment.countDocuments(query);
+
     res.status(200).json({
       success: true,
-      data: { appointments }
+      data: appointments,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / limit),
+      }
     });
   } catch (error) {
     next(error);
   }
 };
 
-exports.getAllPatientsFromAppointments = async (req, res, next) => {
+const getAppointmentsByPatientId = async (req, res, next) => {
   try {
-    const appointments = await Appointment.find().populate('patientId');
-    const uniquePatients = new Map();
+    const { patient_id } = req.query;
+    const { page = 1, limit = 10 } = req.query;
 
-    appointments.forEach(appt => {
-      const patient = appt.patientId;
-      if (patient && !uniquePatients.has(patient._id.toString())) {
-        uniquePatients.set(patient._id.toString(), patient);
-      }
-    });
+    if (!patient_id) return next(new AppError('patient_id query param is required', 400));
+
+    const query = { patientId: patient_id };
+
+    const appointments = await Appointment.find(query)
+      .skip((page - 1) * limit)
+      .limit(Number(limit))
+      .populate('doctorId', 'name specialization')
+      .populate('patientId', 'name email');
+
+    const total = await Appointment.countDocuments(query);
 
     res.status(200).json({
       success: true,
-      data: Array.from(uniquePatients.values())
+      data: appointments,
+      pagination: {
+        total,
+        page: Number(page),
+        limit: Number(limit),
+        totalPages: Math.ceil(total / limit),
+      }
     });
   } catch (error) {
     next(error);
   }
+};
+
+module.exports = {
+  createAppointment,
+  getAppointmentsByDoctorId,
+  getAppointmentsByPatientId
 };
