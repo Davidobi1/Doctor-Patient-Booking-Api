@@ -6,13 +6,23 @@ const {
   getAppointmentsByPatientId
 } = require('../controllers/appointmentController');
 
-// Create a new appointment
-router.post('/appointments', createAppointment);
+// CREATE APPOINTMENT
+router.post('/', createAppointment);
 
-// Get appointments by doctor ID
-router.get('/appointments?doctorId={id}', getAppointmentsByDoctorId);
+// GET appointments by doctorId or patientId (using query)
+router.get('/', (req, res, next) => {
+  if (req.query.doctorId) {
+    return getAppointmentsByDoctorId(req, res, next);
+  }
+  if (req.query.patientId) {
+    return getAppointmentsByPatientId(req, res, next);
+  }
 
-// Get appointments by patient ID
-router.get('/appointments?patientId={id}', getAppointmentsByPatientId);
+  // If no query provided
+  return res.status(400).json({
+    success: false,
+    message: 'Please provide doctorId or patientId'
+  });
+});
 
 module.exports = router;

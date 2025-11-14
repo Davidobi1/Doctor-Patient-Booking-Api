@@ -7,7 +7,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const doctorRoutes = require('./routes/doctorRoutes');
-const appointmentRoutes = require('./routes/appointmentRoutes');
+const appointmentRoutes = require('./routes/appointmentroutes');
 const patientRoutes = require('./routes/patientRoutes'); 
 const errorHandler = require('./middlewares/errorHandler');
 const { logger } = require('./utils/logger');
@@ -79,7 +79,7 @@ app.get('/api', (req, res) => {
 
 // API routes
 app.use('/api/doctors', doctorRoutes);
-app.use('/api/appointments', appointmentRoutes);
+app.use('/api/appointments', appointmentroutes);
 app.use('/api/patients', patientRoutes);
 
 // Error handling middleware
