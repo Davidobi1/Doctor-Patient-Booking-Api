@@ -29,6 +29,9 @@ Thumbs.db
 .idea/
 *.swp
 
+# MongoDB Playground files
+playground*.mongodb.js
+
 # Docker
 .dockerignore
 docker-compose.override.yml
