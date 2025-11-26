@@ -7,7 +7,7 @@ const morgan = require('morgan');
 require('dotenv').config();
 
 const doctorRoutes = require('./routes/doctorRoutes');
-const appointmentRoutes = require('./routes/appointmentroutes');
+const appointmentroutes = require('./routes/appointmentRoutes');
 const patientRoutes = require('./routes/patientRoutes'); 
 const errorHandler = require('./middlewares/errorHandler');
 const { logger } = require('./utils/logger');
